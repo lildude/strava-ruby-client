@@ -33,13 +33,14 @@ module Strava
           response_type: options[:response_type] || 'code',
           redirect_uri: options[:redirect_uri] || 'http://localhost',
           approval_prompt: options[:approval_prompt] || 'auto',
-          scope: options[:scope] || 'read'
         )
+        query.delete(:scope)
+        scope = options[:scope] || 'read'
 
-        [endpoint, "authorize?#{query.to_query}"].join('/')
+        encoded = query.to_query
+        [endpoint, "authorize?#{encoded}&scope=#{scope}"].join('/')
       end
 
-      #
       # Complete the authentication process.
       #
       # @option options [Object] :code
